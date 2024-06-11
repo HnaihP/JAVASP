@@ -28,4 +28,19 @@ public class CartService {
     public void clearCart() {
         cartItems.clear();
     }
+    public void updateCartItem(Long productId, int quantity) {
+        for (CartItem item : cartItems) {
+            if (item.getProduct().getId().equals(productId)) {
+                item.setQuantity(quantity);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Product not found in cart: " + productId);
+    }
+
+    public double getTotalPrice() {
+        return cartItems.stream()
+                .mapToDouble(CartItem::getSubtotal)
+                .sum();
+    }
 }

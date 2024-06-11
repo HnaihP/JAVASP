@@ -13,12 +13,18 @@ public class CartController {
     @GetMapping
     public String showCart(Model model) {
         model.addAttribute("cartItems", cartService.getCartItems());
+        model.addAttribute("totalPrice", cartService.getTotalPrice());
         return "/cart/cart";
     }
     @PostMapping("/add")
     public String addToCart(@RequestParam Long productId, @RequestParam int
             quantity) {
         cartService.addToCart(productId, quantity);
+        return "redirect:/cart";
+    }
+    @PostMapping("/update/{productId}")
+    public String updateCartItem(@PathVariable Long productId, @RequestParam int quantity) {
+        cartService.updateCartItem(productId, quantity);
         return "redirect:/cart";
     }
     @GetMapping("/remove/{productId}")
