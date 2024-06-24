@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .invalidateHttpSession(true) // Hủy phiên làm việc.
                         .clearAuthentication(true) // Xóa xác thực.
                         .permitAll()
-                ) .
+                ).
                 formLogin(formLogin -> formLogin
                         .loginPage("/login") // Trang đăng nhập.
                         .loginProcessingUrl("/login") // URL xử lý đăng nhập.
@@ -73,7 +73,11 @@ public class SecurityConfig {
                 sessionManagement(sessionManagement -> sessionManagement
                         .maximumSessions(1) // Giới hạn số phiên đăng nhập.
                         .expiredUrl("/login") // Trang khi phiên hết hạn.
-                ) .
+                ) .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login") // Trang đăng nhập tùy chỉnh
+                        .defaultSuccessUrl("/") // Trang sau đăng nhập thành công.
+                        .failureUrl("/login?error=true") // Trang đăng nhập thất bại.
+                ).
                 httpBasic(httpBasic -> httpBasic
                         .realmName("hutech") // Tên miền cho xác thực cơ bản.
                 ) .

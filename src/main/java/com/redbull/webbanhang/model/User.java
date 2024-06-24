@@ -5,13 +5,14 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+
+import java.time.LocalDate;
+import java.util.*;
+
 @Getter
 @Setter
 @ToString
@@ -31,6 +32,9 @@ public class User implements UserDetails {
             @Column(name = "password", length = 250)
             @NotBlank(message = "Password is required")
             private String password;
+    @Transient
+    @NotBlank(message = "Please confirm your password")
+    private String confirmPassword;
             @Column(name = "email", length = 50, unique = true)
             @NotBlank(message = "Email is required")
             @Size(min = 1, max = 50, message = "Email must be between 1 and 50 characters")
@@ -40,6 +44,14 @@ public class User implements UserDetails {
     @Length(min = 10, max = 10, message = "Phone must be 10 characters")
     @Pattern(regexp = "^[0-9]*$", message = "Phone must be number")
     private String phone;
+    @Column(name = "address", length = 255)
+    @NotBlank(message = "Address is required")
+    private String address;
+
+    @Column(name = "dob")
+    @Past(message = "Date of Birth must be in the past")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dob;
     @Column(name = "provider", length = 50)
     private String provider;
     @ManyToMany(fetch=FetchType.EAGER)
@@ -77,6 +89,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    @AssertTrue(message = "Passwords do not match")
+    public boolean isPasswordConfirmed() {
+        return password != null && password.equals(confirmPassword);
     }
     @Override
     public boolean equals(Object o) {

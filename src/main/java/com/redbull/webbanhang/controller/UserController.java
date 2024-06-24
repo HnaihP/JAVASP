@@ -27,7 +27,8 @@ public class UserController {
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") User user, // Validateđối tượng User
                                    @NotNull BindingResult bindingResult, // Kết quả của quátrình validate
-Model model) {
+                                    Model model)
+    {
         if (bindingResult.hasErrors()) { // Kiểm tra nếu có lỗi validate
             var errors = bindingResult.getAllErrors()
                     .stream()
