@@ -43,4 +43,10 @@ public class CartService {
                 .mapToDouble(CartItem::getSubtotal)
                 .sum();
     }
+    public double calculateTotalPrice() {
+        return cartItems.stream()
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                .sum();
+    }
+
 }

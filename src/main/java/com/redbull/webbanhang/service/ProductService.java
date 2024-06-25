@@ -37,6 +37,9 @@ public class ProductService {
         existingProduct.setCategory(product.getCategory());
         return productRepository.save(existingProduct);
     }
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
     // Delete a product by its id
     public void deleteProductById(Long id) {
         if (!productRepository.existsById(id)) {

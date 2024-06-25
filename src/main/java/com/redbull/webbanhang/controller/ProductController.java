@@ -105,4 +105,8 @@ public class ProductController {
         productService.deleteProductById(id);
         return "redirect:/products";
     }
+    @GetMapping("/management")
+    public String showProductManagement() {
+        return "/products/product-management";
+    }
 }
